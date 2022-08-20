@@ -1,3 +1,5 @@
+# Advanced Hunting Schema
+
 |Table name|Description|
 |:----|:----|
 |AlertEvidence|Files, IP addresses, URLs, users, or devices associated with alerts|
