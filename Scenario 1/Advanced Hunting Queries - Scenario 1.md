@@ -1,9 +1,14 @@
+# Scenario 1 Queries
+
+## Suspicious Scheduled Task Activity
+
 ```
 AlertInfo
 | join AlertEvidence on AlertId
 | where Title =~ "Suspicious Task Scheduler activity"
 | project Timestamp, DeviceName, ProcessCommandLine
-
+```
+```
 AlertInfo
 | join AlertEvidence on AlertId
 | where ProcessCommandLine has @"C:\Windows\OpenSSH\"
@@ -13,7 +18,17 @@ AlertInfo
 | extend Account=parse_json(ADF.Account)
 | extend Host=parse_json(parse_json(ImageFile.Host))
 | project Timestamp, AlertId, Host.NetBiosName, Title, ProcessCommandLine, Account.Name, PProc.CommandLine, ImageFile.CreatedTimeUtc
+```
 
+## Wider SSH Usage
+```
+DeviceProcessEvents
+| where FolderPath startswith @"C:\Windows\OpenSSH"
+| summarize make_set(DeviceName) by ProcessCommandLine
+| project ProcessCommandLine, set_DeviceName, array_length(set_DeviceName)
+```
+## Wider Discovery
+```
 DeviceProcessEvents
 | where Timestamp between (datetime(2022-08-08) .. datetime(2022-08-10))
 | where 
@@ -21,37 +36,50 @@ DeviceProcessEvents
      or InitiatingProcessFileName contains "wmiprvse"
 | where InitiatingProcessAccountName has_any ("da_dan", "da_fred")
 | summarize make_set(DeviceName) by ProcessCommandLine
-
-
+```
+## Working Directory - C:\Windows\Temp\data
+```
 DeviceProcessEvents
 | where ProcessCommandLine has @"C:\Windows\Temp\data"
 | summarize make_set(DeviceName) by ProcessCommandLine
 | project ProcessCommandLine, set_DeviceName, array_length(set_DeviceName)
-
+```
+```
 DeviceFileEvents
 | where FolderPath startswith @"C:\Windows\Temp\data"
 | project Timestamp, InitiatingProcessCommandLine, FolderPath
-
+```
+```
 DeviceEvents
 | search @"C:\Windows\Temp\data"
 | project Timestamp, ActionType, InitiatingProcessCommandLine
-
+```
+```
 DeviceFileEvents
 | where FolderPath startswith @"C:\Windows\Temp\CYG-DC2016-01.7z"
 | project Timestamp, InitiatingProcessCommandLine, FolderPath
-
+```
+## Filtering the Noise
+```
 search  @"AAA.exe"
 | summarize count() by $table
-
+```
+```
 DeviceProcessEvents
 | where FolderPath has @"C:\Windows\Temp\"
-
 | where FileName has_any (
     "AAA.exe", "PsExec.exe", "UN_A.exe", "lsas.exe"
     )
 //| summarize make_set(DeviceName) by ProcessCommandLine
 //| project ProcessCommandLine, set_DeviceName, array_length(set_DeviceName)
-
+```
+```
 DeviceFileEvents
 | search "AAA.exe"
+```
+## Tool Masquerading
+```
+DeviceProcessEvents
+| where FileName =="lsas.exe"
+| project ProcessCommandLine
 ```
