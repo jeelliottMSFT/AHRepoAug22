@@ -1,7 +1,6 @@
 # Scenario 1 Queries
 
 ## Suspicious Scheduled Task Activity
-
 ```
 AlertInfo
 | join AlertEvidence on AlertId
@@ -19,7 +18,6 @@ AlertInfo
 | extend Host=parse_json(parse_json(ImageFile.Host))
 | project Timestamp, AlertId, Host.NetBiosName, Title, ProcessCommandLine, Account.Name, PProc.CommandLine, ImageFile.CreatedTimeUtc
 ```
-
 ## Wider SSH Usage
 ```
 DeviceProcessEvents
