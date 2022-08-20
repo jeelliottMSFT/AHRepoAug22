@@ -1,4 +1,4 @@
-
+```
 DeviceNetworkEvents
 | where RemoteUrl == |"edgeupdator.tv"
 | project Timestamp, DeviceName, InitiatingProcessCommandLine, RemoteUrl, RemoteIP, RemotePort
@@ -65,3 +65,4 @@ DeviceFileEvents
 DeviceNetworkEvents
 | where InitiatingProcessFileName == "sc.exe"
 | project Timestamp, RemoteIP, RemotePort, InitiatingProcessCommandLine
+```

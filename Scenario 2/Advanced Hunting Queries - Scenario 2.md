@@ -1,3 +1,4 @@
+```
 DeviceProcessEvents
 | where DeviceName startswith "web3"
 | where InitiatingProcessFileName in~ ('w3wp.exe')
@@ -93,3 +94,4 @@ DeviceProcessEvents
 DeviceProcessEvents
 | where InitiatingProcessFileName =~ "WmiPrvse.exe"
 | summarize count() by AccountName, AccountDomain
+```
