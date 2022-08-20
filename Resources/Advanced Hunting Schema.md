@@ -26,3 +26,6 @@
 |IdentityInfo|Account information from various sources, including Azure Active Directory|
 |IdentityLogonEvents|Authentication events on Active Directory and Microsoft online services|
 |IdentityQueryEvents|Queries for Active Directory objects, such as users, groups, devices, and domains|
+
+
+https://docs.microsoft.com/en-us/microsoft-365/security/defender/advanced-hunting-schema-tables?view=o365-worldwide
